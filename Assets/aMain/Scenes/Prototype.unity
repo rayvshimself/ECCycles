@@ -9820,7 +9820,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 5614961989736774944, guid: 0c703781cc6dd4a45a6287cef54b71b6,
     type: 3}
   lerpSpeed: 2
-  frameUpdate: 20
+  frameUpdate: 30
 --- !u!114 &1317117935
 MonoBehaviour:
   m_ObjectHideFlags: 0

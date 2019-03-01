@@ -21,7 +21,7 @@ public class GhostData : MonoBehaviour
     private Collider _endCol;
     private bool trackingBool = false;
     private bool replayBool = false;
-    private int index = 0;
+    private int index = 1;
     private bool noOverflow = true;
 
     private GameObject ghost;
@@ -50,23 +50,27 @@ public class GhostData : MonoBehaviour
 
         if (other == _endCol)
         {
-            ghost = Instantiate(ghostPrefab, posTracker[0], Quaternion.identity);
+            ghost = Instantiate(ghostPrefab, posTracker[1], Quaternion.identity);
             //trackingBool = false;
             replayBool = true;
             //stop writing in List and playback
         }
     }
     
-    private void Update()
-    {
-        if (replayBool && noOverflow && ghost != null)
-        {
-            _timeStartetdLerping = Time.time;
-        }
-    }
+//    private void Update()
+//    {
+//        if (replayBool && noOverflow && ghost != null)
+//        {
+//            _timeStartetdLerping = Time.time;
+//        }
+//    }
 
     private void FixedUpdate()
     {
+        if ((posTracker.Count - 1) == 1000)
+        {
+            trackingBool = false;
+        }
 
         if (FixedTime.fixedFrameCount % frameUpdate == 0 && trackingBool)
         {
