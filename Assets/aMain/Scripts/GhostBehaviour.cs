@@ -21,6 +21,7 @@ public class GhostBehaviour : MonoBehaviour
     private void Start()
     {
         frameUpdate = GhostData.frameUpdate;
+        transform.GetComponent<MeshRenderer>().material.SetColor("_Color",GhostData.initColor);
     }
 
     private void FixedUpdate()
@@ -31,6 +32,11 @@ public class GhostBehaviour : MonoBehaviour
 
             actualPos = transform.localPosition;
             nextPos = GhostData.posTracker[index];
+            if (nextPos == null)
+            {
+                nextPos = actualPos;
+            }
+            
             journeyLength = Vector3.Distance(actualPos, nextPos);
 
             if (index >= GhostData.posTracker.Count - 1)

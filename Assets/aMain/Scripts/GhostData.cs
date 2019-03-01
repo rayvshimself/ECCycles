@@ -12,34 +12,22 @@ public class GhostData : MonoBehaviour
     public static List<Vector3> posTracker = new List<Vector3>();
     //List<GameObject> ghostList = new List<GameObject>();
     public static int frameUpdate = 20;
+    public static Color initColor;
     
-    public GameObject trackingStart;
+    //public GameObject trackingStart;
     public GameObject trackingEnd;
     public GameObject ghostPrefab;
 
     private Collider _startCol;
     private Collider _endCol;
     private bool trackingBool = false;
-
     private bool replayBool = false;
-//    private int index;
-//    private bool noOverflow = true;
-//
-//    private GameObject ghost;
-//    private int ghostCount = 0;
-//    private Vector3 actualPos;
-//    private Vector3 nextPos;
-//    private float startTime;
-//    private float _timeStartetdLerping;
-//    private float journeyLength;
-//
-//    private float distCovered;
-//    private float fracJourney;
+
+    private int ghostCount = 0;
 
     private void Awake()
     {
         trackingBool = true;
-        //_startCol = trackingStart.GetComponent<Collider>();
         _endCol = trackingEnd.GetComponent<Collider>();
     }
 
@@ -47,16 +35,13 @@ public class GhostData : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-//        if (other == _startCol)
-//        {
-//            trackingBool = true;
-//            //start writing to List
-//        }
-
-        if (other == _endCol)
+        if (other == _endCol && ghostCount <= 10)
         {
             // ghostList.Add(Instantiate(ghostPrefab, posTracker[1], Quaternion.identity));
             Instantiate(ghostPrefab, posTracker[1], Quaternion.identity);
+            ghostCount++;
+            
+            initColor = new Color(1f/ghostCount,0.5f,0.5f);
 
             //ghost = Instantiate(ghostPrefab, posTracker[1], Quaternion.identity);
             //replayBool = true;
@@ -66,7 +51,7 @@ public class GhostData : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if ((posTracker.Count - 1) >= 1000)
+        if ((posTracker.Count - 1) >= 3600)
         {
             trackingBool = false;
         }
