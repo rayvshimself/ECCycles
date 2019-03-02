@@ -13,27 +13,27 @@ public class GhostData : MonoBehaviour
     public GameObject ghostPrefab;
 
     private Collider _endCol;
-    private bool trackingBool = false;
-    private int ghostCount = 0;
+    private bool _trackingBool = false;
+    private int _ghostCount = 0;
 
     private void Awake()
     {
         _endCol = trackingEnd.GetComponent<Collider>();
         
         //Start tracking
-        trackingBool = true;
+        _trackingBool = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         //if the endcollider is triggered spawn a ghost, unless the max ghost count is reached
-        if (other == _endCol && ghostCount <= 10)
+        if (other == _endCol && _ghostCount <= 10)
         {
 
             Instantiate(ghostPrefab, posTracker[1], Quaternion.identity);
-            ghostCount++;
+            _ghostCount++;
             
-            initColor = new Color(1f/ghostCount,0.5f,0.5f);
+            initColor = new Color(1f/_ghostCount,0.5f,0.5f);
         }
     }
 
@@ -42,11 +42,11 @@ public class GhostData : MonoBehaviour
         //stop filling in tracking points into the List posTracker
         if ((posTracker.Count - 1) >= 3600)
         {
-            trackingBool = false;
+            _trackingBool = false;
         }
         
         //Fills in positions into List every specified Update
-        if (FixedTime.fixedFrameCount % frameUpdate == 0 && trackingBool)
+        if (FixedTime.fixedFrameCount % frameUpdate == 0 && _trackingBool)
         {
             posTracker.Add(this.transform.localPosition);
             //Debug.Log("posTracker Count: " + posTracker.Count);

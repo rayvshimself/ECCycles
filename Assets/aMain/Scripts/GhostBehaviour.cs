@@ -4,54 +4,62 @@ using UnityEngine;
 
 public class GhostBehaviour : MonoBehaviour
 {
+
     public float lerpSpeed = 2;
     public int frameUpdate = 20;
 
-    private int index = 1;
-    private bool noOverflow = true;
+    private int _index = 1;
+    private bool _noOverflow = true;
 
-    private Vector3 actualPos;
-    private Vector3 nextPos;
+    private Vector3 _actualPos;
+    private Vector3 _nextPos;
     
-    private float startTime;
-    private float journeyLength;
-    private float distCovered;
-    private float fracJourney;
+    private float _startTime;
+    private float _journeyLength;
+    private float _distCovered;
+    private float _fracJourney;
+    private ObjectPooler _objPooler;
 
     private void Start()
     {
+        _objPooler = ObjectPooler.Instance;
         frameUpdate = GhostData.frameUpdate;
         transform.GetComponent<MeshRenderer>().material.SetColor("_Color",GhostData.initColor);
     }
 
     private void FixedUpdate()
     {
-        if (FixedTime.fixedFrameCount % frameUpdate == 0 && noOverflow)
+        if (FixedTime.fixedFrameCount % frameUpdate == 0 && _noOverflow)
         {
-            startTime = Time.time;
+            _startTime = Time.time;
 
-            actualPos = transform.localPosition;
-            nextPos = GhostData.posTracker[index];
-            if (nextPos == null)
+            _actualPos = transform.localPosition;
+            _nextPos = GhostData.posTracker[_index];
+            if (_nextPos == null)
             {
-                nextPos = actualPos;
+                _nextPos = _actualPos;
             }
             
-            journeyLength = Vector3.Distance(actualPos, nextPos);
+            _journeyLength = Vector3.Distance(_actualPos, _nextPos);
 
-            if (index >= GhostData.posTracker.Count - 1)
+            if (_index >= GhostData.posTracker.Count - 1)
             {
-                noOverflow = false;
+                _noOverflow = false;
             }
-            index++;
+            _index++;
+        }
+
+        if (FixedTime.fixedFrameCount % (frameUpdate / 2) == 0 && _noOverflow)
+        {
+            _objPooler.SpawnFromPool("Cuce", transform.position, Quaternion.identity);
         }
 
 
-        if (noOverflow)
+        if (_noOverflow)
         {
-            distCovered = (Time.time - startTime) * lerpSpeed;
-            fracJourney = distCovered / journeyLength;
-            transform.localPosition = Vector3.Lerp(actualPos, nextPos, fracJourney);
+            _distCovered = (Time.time - _startTime) * lerpSpeed;
+            _fracJourney = _distCovered / _journeyLength;
+            transform.localPosition = Vector3.Lerp(_actualPos, _nextPos, _fracJourney);
 
         }
 
