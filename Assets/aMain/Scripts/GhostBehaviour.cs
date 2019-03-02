@@ -47,12 +47,13 @@ public class GhostBehaviour : MonoBehaviour
                 _noOverflow = false;
             }
             _index++;
+            _objPooler.SpawnFromPool("Pool1", transform.position, Quaternion.identity);
         }
 
-        if (FixedTime.fixedFrameCount % (frameUpdate / 2) == 0 && _noOverflow)
-        {
-            _objPooler.SpawnFromPool("Cuce", transform.position, Quaternion.identity);
-        }
+//        if (FixedTime.fixedFrameCount % (frameUpdate / 2) == 0 && _noOverflow)
+//        {
+//
+//        }
 
 
         if (_noOverflow)
